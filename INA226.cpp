@@ -44,9 +44,8 @@ bool INA226::configure(ina226_averages_t avg, ina226_busConvTime_t busConvTime, 
     vBusMax = 36;
     vShuntMax = 0.08192f;
 
-    writeRegister16(INA226_REG_CONFIG, config);
+    return writeRegister16(INA226_REG_CONFIG, config);
 
-    return true;
 }
 
 bool INA226::calibrate(float rShuntValue, float iMaxExpected)
@@ -70,9 +69,8 @@ bool INA226::calibrate(float rShuntValue, float iMaxExpected)
 
     calibrationValue = (uint16_t)((0.00512) / (currentLSB * rShunt));
 
-    writeRegister16(INA226_REG_CALIBRATION, calibrationValue);
+    return writeRegister16(INA226_REG_CALIBRATION, calibrationValue);
 
-    return true;
 }
 
 float INA226::getMaxPossibleCurrent(void)
@@ -327,11 +325,12 @@ int16_t INA226::readRegister16(uint8_t reg)
     return value;
 }
 
-void INA226::writeRegister16(uint8_t reg, uint16_t val)
+bool INA226::writeRegister16(uint8_t reg, uint16_t val)
 {
     uint8_t vla;
     vla = (uint8_t)val;
     val >>= 8;
+
 
     Wire.beginTransmission(inaAddress);
     #if ARDUINO >= 100
@@ -344,4 +343,11 @@ void INA226::writeRegister16(uint8_t reg, uint16_t val)
         Wire.send(vla);
     #endif
     Wire.endTransmission();
+    byte error = Wire.endTransmission(); // run transaction
+    //SerialUSB.println("error: " + String(error));
+    if (error) {
+        return true;
+    }
+
+    return false;
 }

@@ -150,7 +150,7 @@ class INA226
 	void setMaskEnable(uint16_t mask);
 	uint16_t getMaskEnable(void);
 
-	void writeRegister16(uint8_t reg, uint16_t val);
+	bool writeRegister16(uint8_t reg, uint16_t val);
 	int16_t readRegister16(uint8_t reg);
 };
 
