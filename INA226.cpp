@@ -110,9 +110,9 @@ float INA226::getMaxPower(void)
     return (getMaxCurrent() * vBusMax);
 }
 
-int16_t INA226::readRawBusPower(void)
+int32_t INA226::readRawBusPower(void)
 {
-    return readRegister16(INA226_REG_POWER);
+    return (int32_t)readRegister16(INA226_REG_POWER);
 }
 
 float INA226::readBusPower(void)
@@ -120,14 +120,24 @@ float INA226::readBusPower(void)
     return (readRegister16(INA226_REG_POWER) * powerLSB);
 }
 
-int16_t INA226::readRawShuntCurrent(void)
+float INA226::readBusPowerFromRaw(int32_t raw)
 {
-    return readRegister16(INA226_REG_CURRENT);
+    return (raw * powerLSB);
+}
+
+int32_t INA226::readRawShuntCurrent(void)
+{
+    return (int32_t)readRegister16(INA226_REG_CURRENT);
 }
 
 float INA226::readShuntCurrent(void)
 {
     return (readRegister16(INA226_REG_CURRENT) * currentLSB);
+}
+
+float INA226::readShuntCurrentFromRaw(int32_t raw)
+{
+    return (raw * currentLSB);
 }
 
 float INA226::readShuntVoltage(void)
@@ -139,9 +149,9 @@ float INA226::readShuntVoltage(void)
     return (voltage * 0.0000025);
 }
 
-int16_t INA226::readRawBusVoltage(void)
+int32_t INA226::readRawBusVoltage(void)
 {
-    return readRegister16(INA226_REG_BUSVOLTAGE);    
+    return (int32_t)readRegister16(INA226_REG_BUSVOLTAGE);    
 }
 
 float INA226::readBusVoltage(void)

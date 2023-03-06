@@ -128,12 +128,14 @@ class INA226
 	bool isMathOverflow(void);
 	bool isAlert(void);
 
-	int16_t readRawShuntCurrent(void);
+	int32_t readRawShuntCurrent(void);
 	float readShuntCurrent(void);
+	float readShuntCurrentFromRaw(int32_t raw);
 	float readShuntVoltage(void);
-	int16_t readRawBusPower(void);
+	int32_t readRawBusPower(void);
+	float readBusPowerFromRaw(int32_t raw);
 	float readBusPower(void);
-	int16_t readRawBusVoltage(void);
+	int32_t readRawBusVoltage(void);
 	float readBusVoltage(void);
 
 	float getMaxPossibleCurrent(void);
